@@ -18,20 +18,22 @@ namespace Client.Controller
     {
         public async Task<IActionResult> Index()
         {
-
             var bearerToken = await HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme, "access_token");
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(bearerToken);
             var claims = jwtToken.Claims;
 
             var claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            claimsIdentity.AddClaim(new Claim("access_token", bearerToken));
+            claimsIdentity.AddClaim(new Claim("refresh_token", bearerToken));
             foreach (var item in claims)
             {
                 claimsIdentity.AddClaim(item);
             }
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            return Ok("default");
+            // url跳转
+            return RedirectToAction("Index", "CookieTest");
         }
     }
 }

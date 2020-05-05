@@ -19,7 +19,7 @@ namespace Client.Controller
         }
 
         [HttpGet("index")]
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl)
         {
             return Ok("1");
         }

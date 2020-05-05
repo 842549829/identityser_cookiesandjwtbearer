@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,13 @@ namespace Client.Controller
     {
         public IActionResult Index()
         {
-            return Ok(" CookieTest");
+            var refresh_token = this.User.Claims.FirstOrDefault(d => d.Type == "refresh_token")?.Value;
+            if (refresh_token != null)
+            {
+                // 刷新 access_token
+            }
+            // 根据token刷新 acco
+            return Ok("CookieTest");
         }
     }
 }
